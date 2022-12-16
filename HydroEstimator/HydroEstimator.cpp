@@ -4,6 +4,7 @@
 
 
 #include "HydroEstimator.h"
+#include "SimpleKalmanFilter.h"
 
 #include <iostream>
 #include <fstream>
@@ -16,7 +17,7 @@ constexpr auto PI = 3.14159265;
 #define FILE_DATA_NAME "data.dat"
 // [TODO] create an if define for layout data creation 
 
-float wave,
+double wave,
 height = 3.00,
 real_dist,
 choice,
@@ -39,6 +40,13 @@ int main() {
 
     std::fstream DataFile; // creates file 
     DataFile.open(FILE_DATA_NAME, std::ios::out);
+
+    SimpleFilter KF;
+    Eigen::VectorXd state = KF.getStateVector();
+    Eigen::MatrixXd F = KF.getFmatrix();
+
+    std::cout << "state: " << "\n" << state << "\n";
+    std::cout << "F: "<< "\n" << F << "\n";
 
     while (epoch <= epoch_lim) {
 
